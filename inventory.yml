@@ -1,0 +1,14 @@
+all:
+  hosts:
+    vm1:
+      ansible_host: 192.168.100.30
+    vm2:
+      ansible_host: 192.168.100.31
+    vm3:
+      ansible_host: 192.168.100.33
+    vm4:
+      ansible_host: 192.168.100.34
+
+  vars:
+    ansible_user: simoda
+    ansible_ssh_private_key_file: ~/.ssh/id_ed25519

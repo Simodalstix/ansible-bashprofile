@@ -1,0 +1,30 @@
+---
+- name: Configure bash profiles with custom PS1
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create custom bash profile for users
+      copy:
+        content: |
+          # Custom PS1 - Yellow for user, Blue for directory
+          if [ "$EUID" -eq 0 ]; then
+            export PS1='\[\033[0;33m\]\u\[\033[0m\]@\[\033[0;33m\]\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]# '
+          else
+            export PS1='\[\033[0;33m\]\u\[\033[0m\]@\[\033[0;33m\]\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]$ '
+          fi
+        dest: /etc/profile.d/custom-ps1.sh
+        mode: "0644"
+
+    - name: Create custom bash profile for root
+      copy:
+        content: |
+          # Custom PS1 - Orange for root, Blue for directory
+          export PS1='\[\033[0;31m\]\u\[\033[0m\]@\[\033[0;31m\]\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]# '
+        dest: /root/.bashrc_custom
+        mode: "0644"
+
+    - name: Source custom profile in root's bashrc
+      lineinfile:
+        path: /root/.bashrc
+        line: "source /root/.bashrc_custom"
+        create: yes
