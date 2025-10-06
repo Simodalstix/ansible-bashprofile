@@ -1,0 +1,11 @@
+---
+- name: Fix PS1 colors to orange
+  hosts: all
+  become: yes
+  tasks:
+    - name: Replace red with orange in bashrc_custom
+      replace:
+        path: /root/.bashrc_custom
+        regexp: '\\033\[0;31m'
+        replace: '\\033[0;33m'
+        backup: yes

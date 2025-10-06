@@ -3,23 +3,20 @@
   hosts: all
   become: yes
   tasks:
-    - name: Create custom bash profile for users
+    - name: Set PS1 for regular users
       copy:
         content: |
-          # Custom PS1 - Yellow for user, Blue for directory
-          if [ "$EUID" -eq 0 ]; then
-            export PS1='\[\033[0;33m\]\u\[\033[0m\]@\[\033[0;33m\]\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]# '
-          else
-            export PS1='\[\033[0;33m\]\u\[\033[0m\]@\[\033[0;33m\]\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]$ '
-          fi
+          # Custom PS1 - Yellow for users, blue directory
+          export PS1='\[\033[0;33m\]\u@\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]$ '
         dest: /etc/profile.d/custom-ps1.sh
         mode: "0644"
 
-    - name: Create custom bash profile for root
+    - name: Set PS1 for root
       copy:
         content: |
-          # Custom PS1 - Orange for root, Blue for directory
-          export PS1='\[\033[0;33m\]\u@\h\[\033[0m\]:\[\033[0;34m\]\w\[\033[0m\]# '
+          # Custom PS1 - Orange for root, blue directory
+          export PS1='\[\033[38;5;208m\]\u@\h\[\033[0m\]:\[\033[01;34m\]\w\[\033[0m\]# '
+
         dest: /root/.bashrc_custom
         mode: "0644"
 
